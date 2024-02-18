@@ -9,7 +9,7 @@ CORS(app)
 
 @app.route("/")
 def default():
-    return "hello"
+    return "Welcome to the backend for Shop Harvest!"
 
 @app.route("/items", methods=['POST'])
 def items():
@@ -50,7 +50,8 @@ def items():
             "product_title": product_title,
             "product_price": product_price,
             "product_save_price": product_save_price,
-            "product_special_offer_text": product_special_offer_text
+            "product_special_offer_text": product_special_offer_text,
+            "url": URL
         }
 
         out_array.append(product_details)
