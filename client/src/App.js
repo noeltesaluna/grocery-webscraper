@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [inputValue, setInputValue] = useState('')
+  const [productList, setProductList] = useState([])
 
+  useEffect(() => {
+    const savedData = localStorage.getItem('productList');
+    if (savedData) {
+      setProductList(JSON.parse(savedData));
+    }
+  }, []);
+  
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log('Form submitted with value:', inputValue)
+    const updatedProductList = [...productList, inputValue];
+    setProductList(updatedProductList);
+    localStorage.setItem('savedData', JSON.stringify(updatedProductList));
+    setInputValue(''); // Reset input value after saving
   }
 
   const handleChange = (event) => {
