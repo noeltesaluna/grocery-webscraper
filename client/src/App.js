@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 export default function App() {
   const [inputValue, setInputValue] = useState('')
   const [productList, setProductList] = useState([])
+  const [productData, setProductData] = useState([])
 
   useEffect(() => {
     const savedData = localStorage.getItem('productList');
     if (savedData) {
       setProductList(JSON.parse(savedData));
+      handleApiCall(JSON.parse(savedData))
     }
   }, []);
   
@@ -15,13 +17,25 @@ export default function App() {
     event.preventDefault()
     const updatedProductList = [...productList, inputValue];
     setProductList(updatedProductList);
-    localStorage.setItem('savedData', JSON.stringify(updatedProductList));
-    setInputValue(''); // Reset input value after saving
+    localStorage.setItem('productList', JSON.stringify(updatedProductList));
+    handleApiCall(updatedProductList)
+    setInputValue('')
   }
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
   }
+
+  const handleApiCall = async (itemArray) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: itemArray })
+    };
+    fetch('/items', requestOptions)
+        .then(response => response.json())
+        .then(data => setProductData(data));
+  } 
 
   return (
     <div className="m-8 text-center"> 
@@ -41,6 +55,7 @@ export default function App() {
           value="Add Product" 
         />
       </form>
+      <pre className="text-m">{JSON.stringify(productData, null, 2)}</pre>
     </div>
   );
 }
