@@ -4,7 +4,6 @@ function TableRow({props}) {
   const { product_title, product_price, product_save_price, product_special_offer_text, url } = props
   let original_price = parseFloat(product_price) + parseFloat(product_save_price)
   return (
-    // <tr className="border-b border-emerald-200 bg-emerald-100 text-neutral-800">
     <>
       <tr className={
         (product_save_price === 0 && product_special_offer_text === '' ) ?
