@@ -12,7 +12,8 @@ export default function App() {
       setProductList(JSON.parse(savedData));
       handleApiCall(JSON.parse(savedData))
     }
-  }, []);
+    // Empty array to ensure only runs when mounted
+  }, [])
   
   const handleSubmit = (event) => {
     event.preventDefault()
