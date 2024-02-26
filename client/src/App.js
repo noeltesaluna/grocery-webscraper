@@ -1,26 +1,31 @@
 import { useState, useEffect } from "react";
 import TableRow from "./components/TableRow";
+import { getProductListings, createProductListing, updateProductListings } from "./utils/api";
 
 export default function App() {
   const [inputValue, setInputValue] = useState('')
-  const [productList, setProductList] = useState([])
   const [productData, setProductData] = useState([])
 
   useEffect(() => {
-    const savedData = localStorage.getItem('productList');
-    if (savedData) {
-      setProductList(JSON.parse(savedData));
-      handleApiCall(JSON.parse(savedData))
-    }
+    getUpdatedProductListings()
+    console.log(productData)
     // Empty array to ensure only runs when mounted
   }, [])
   
+  async function getUpdatedProductListings() {
+    await updateProductListings()
+    const data = await getProductListings()
+    setProductData(data);
+  }
+  
+  async function createNewProductListing(URL) {
+    await createProductListing(URL)
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    const updatedProductList = [...productList, inputValue];
-    setProductList(updatedProductList);
-    localStorage.setItem('productList', JSON.stringify(updatedProductList));
-    handleApiCall(updatedProductList)
+    createNewProductListing(inputValue)
+    getUpdatedProductListings()
     setInputValue('')
   }
 
@@ -28,16 +33,6 @@ export default function App() {
     setInputValue(event.target.value);
   }
 
-  const handleApiCall = async (itemArray) => {
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: itemArray })
-    };
-    fetch('/items', requestOptions)
-        .then(response => response.json())
-        .then(data => setProductData(data));
-  } 
 
   return (
     <div className="m-8 text-center"> 
@@ -57,7 +52,7 @@ export default function App() {
           value="Add Product" 
         />
       </form>
-      { !productData.products_details ? (
+      { !productData.productlistings ? (
         <p>loading</p>
       ) : (
         <table className="min-w-full text-left text-xs font-light">
@@ -71,7 +66,7 @@ export default function App() {
             </tr>
           </thead>
           <tbody>
-          {productData.products_details.map((product) =>
+          {productData.productlistings.map((product) =>
             <TableRow props={product}/>
           )}
           </tbody>
