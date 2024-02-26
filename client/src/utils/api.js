@@ -5,6 +5,23 @@ export async function createProductListing(URL) {
         body: JSON.stringify({ url: URL })
     };
     const response = await fetch('/create_productlisting', requestOptions)
-    const data = await response.json;
+    const data = await response.json();
+    return data
+}
+
+export async function getProductListings() {
+    const response = await fetch('/productlistings')
+    const data = await response.json();
+    console.log(data)
+    return data
+}
+
+export async function updateProductListings() {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+    };
+    const response = await fetch('/update_productlistings', requestOptions)
+    const data = await response.json();
     return data
 }
