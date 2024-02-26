@@ -73,7 +73,6 @@ def update_productlistings():
 
     for productlisting in productlistings:
         page = requests.get("https://www.coles.com.au/product/" + str(productlisting.code))
-        print("https://www.coles.com.au/product/" + str(productlisting.code))
 
         soup = BeautifulSoup(page.text, 'html.parser')
         product_price = soup.find(class_ = "price__value").text
