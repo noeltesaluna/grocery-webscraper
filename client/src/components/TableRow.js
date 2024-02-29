@@ -1,7 +1,8 @@
 import React from 'react'
 
 function TableRow({props}) {
-  const { name, price, price_off, offer_text, code } = props
+  const { name, price, price_off, supermarket, offer_text, code } = props
+  const url =  'Coles' ? 'https://www.coles.com.au/product/' + code : 'Minor';
   let original_price = parseFloat(price) + parseFloat(price_off)
   return (
     <>
@@ -13,6 +14,7 @@ function TableRow({props}) {
           "border-b border-yellow-200 bg-yellow-100 text-neutral-800"
       }>
         <td className="px-6 py-4 font-medium">{name}</td>
+        <td className="px-6 py-4">{supermarket}</td>
         <td className="px-6 py-4">${price.toFixed(2)}</td>
         <td className="px-6 py-4">${original_price.toFixed(2)}</td>
         <td className="px-6 py-4">
@@ -20,15 +22,16 @@ function TableRow({props}) {
           <>No special offer</>
         ) : (
           (offer_text === '') ? (
-            <>Save ${price_off} (<span className='text-emerald-500	'>-{(( 1 - (price_off / original_price)) * 100).toFixed(2)}%</span>)</>
+            <>Save ${price_off.toFixed(2)} (<span className='text-emerald-500	'>-{(100 * (original_price - price) / original_price).toFixed(2)}%</span>)</>
           ) : (
             <>{offer_text}</>
           )
         )}
         </td>
         <td className="px-6 py-4">
-          <a className='text-blue-500 hover:underline' href={code} target="_blank" rel="noreferrer">Link</a>
+          <a className='text-blue-500 hover:underline' href={url} target="_blank" rel="noreferrer">Link</a>
         </td>
+        <td className="px-6 py-4">X</td>
       </tr>
     </>
   )
