@@ -31,33 +31,16 @@ def create_productlisting():
 def update_productlistings():
     productlistings = ProductListing.query.all()
 
-    for productlisting in productlistings:
-        page = requests.get("https://www.coles.com.au/product/" + str(productlisting.code))
+    try:
+        for productlisting in productlistings:
+            updatedProductlisting = coles_webscraper(productlisting.url)
+            productlisting.price = updatedProductlisting.price
+            productlisting.price_off = updatedProductlisting.price_off
+            productlisting.offer_text = updatedProductlisting.offer_text
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message": str(e)}), 400
 
-        soup = BeautifulSoup(page.text, 'html.parser')
-        product_price = soup.find(class_ = "price__value").text
-        product_price = product_price[product_price.find("$") + 1:]
-        product_save_price = 0
-        product_special_offer_text = ""
-
-        # check if product is on special
-        if soup.find(class_ = "is-special") is not None:
-            
-            # check if product has special offer (i.e 2 for $10)
-            if soup.find('button', attrs={'data-testid': 'complex-promotion-link'}) is not None:
-                product_special_offer_text = soup.find('button', attrs={'data-testid': 'complex-promotion-link'}).text
-            
-            # check if proudct price drop (i.e "Save $0.25")
-            else:
-                product_save_price = soup.find('section', class_ = "badge-label").text
-                product_save_price = product_save_price[product_save_price.find("$") + 1:]
-        
-        productlisting.price = product_price
-        productlisting.price_off = product_save_price
-        productlisting.offer_text = product_special_offer_text
-    
-    db.session.commit()
-    
     return jsonify({"message": "Updated product listings!"}), 201
 
         
