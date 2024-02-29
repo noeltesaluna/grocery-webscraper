@@ -41,5 +41,5 @@ def coles_webscraper(_URL):
         offer_text=product_special_offer_text,
         url = _URL
     )
-    print(new_productlisting.code)
+
     return new_productlisting
