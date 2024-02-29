@@ -1,20 +1,25 @@
 import { useState, useEffect } from "react";
 import TableRow from "./components/TableRow";
 import { getProductListings, createProductListing, updateProductListings } from "./utils/api";
+import { motion } from "framer-motion"
 
 export default function App() {
   const [inputValue, setInputValue] = useState('')
   const [productData, setProductData] = useState([])
+  const [lastUpdated, setLastUpdated] = useState('')
 
   useEffect(() => {
     getUpdatedProductListings()
-    console.log(productData)
     // Empty array to ensure only runs when mounted
   }, [])
   
   async function getUpdatedProductListings() {
     await updateProductListings()
     const data = await getProductListings()
+    var currentDateTime = new Date();
+    var date = currentDateTime.toLocaleDateString();
+    var time = currentDateTime.toLocaleTimeString();
+    setLastUpdated(date + ", " + time)
     setProductData(data);
   }
   
@@ -53,12 +58,19 @@ export default function App() {
         />
       </form>
       { !productData.productlistings ? (
-        <p>loading</p>
+        <p className="animate-pulse">loading</p>
       ) : (
+        <motion.div
+          initial={{ opacity: 0 }} // Initial state (invisible)
+          animate={{ opacity: 1 }} // Animate to fully visible
+          transition={{ duration: 0.5 }} // Duration of the animation
+        >
+        <p className="text-left text-xs italic">Last updated: {lastUpdated}</p>
         <table className="min-w-full text-left text-xs font-light">
           <thead className="border-b font-medium dark:border-neutral-500">
             <tr>
               <th className="px-6 py-4">Product</th>
+              <th className="px-6 py-4">Supermarket</th>
               <th className="px-6 py-4">Current Price</th>
               <th className="px-6 py-4">Orignal Price</th>
               <th className="px-6 py-4">Special Offer</th>
@@ -71,6 +83,7 @@ export default function App() {
           )}
           </tbody>
         </table>
+        </motion.div>
       )
 }
     </div>
