@@ -4,15 +4,14 @@ export async function createProductListing(URL) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: URL })
     };
-    const response = await fetch('/create_productlisting', requestOptions)
+    const response = await fetch('/product_listings', requestOptions)
     const data = await response.json();
     return data
 }
 
 export async function getProductListings() {
-    const response = await fetch('/productlistings')
+    const response = await fetch('/product_listings')
     const data = await response.json();
-    console.log(data)
     return data
 }
 
