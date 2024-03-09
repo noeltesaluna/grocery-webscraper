@@ -13,11 +13,12 @@ function TableRow({props}) {
           "border-b border-emerald-200 bg-emerald-100 text-neutral-800" : 
           "border-b border-yellow-200 bg-yellow-100 text-neutral-800"
       }>
-        <td className="px-6 py-4 font-medium">{name}</td>
-        <td className="px-6 py-4">{supermarket}</td>
-        <td className="px-6 py-4">${price.toFixed(2)}</td>
-        <td className="px-6 py-4">${original_price.toFixed(2)}</td>
-        <td className="px-6 py-4">
+        <td className="px-2 py-1">X</td>
+        <td className="px-2 py-1 font-medium">{name}</td>
+        <td className="px-2 py-1">{supermarket}</td>
+        <td className="px-2 py-1">${price.toFixed(2)}</td>
+        <td className="px-2 py-1">${original_price.toFixed(2)}</td>
+        <td className="px-2 py-1">
         {(price_off === 0 && offer_text === '' ) ? (
           <>No special offer</>
         ) : (
@@ -28,10 +29,9 @@ function TableRow({props}) {
           )
         )}
         </td>
-        <td className="px-6 py-4">
+        <td className="px-2 py-1">
           <a className='text-blue-500 hover:underline' href={url} target="_blank" rel="noreferrer">Link</a>
         </td>
-        <td className="px-6 py-4">X</td>
       </tr>
     </>
   )
