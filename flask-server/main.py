@@ -23,12 +23,12 @@ def create_product_listing():
     return jsonify({"message": "Product listing created!"}), 201
 
 @app.route("/product_listings/<int:product_id>", methods=["DELETE"])
-def delete_product_listing(product_id):
+def delete_product_listing(product_id):    
     product = ProductListing.query.get(product_id)
-    if not product_id:
+    if not product:
         return jsonify({"message": "Product ID: " + str(product_id) + " doesn't exist"}), 400
     db.session.delete(product)
-    db.session.configure()
+    db.session.commit()
     return jsonify({"message": "Product listing removed!"}), 201 
 
 # Update all product listings
