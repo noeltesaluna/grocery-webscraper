@@ -57,7 +57,7 @@ export default function App() {
           value="Add Product" 
         />
       </form>
-      { !productData.productlistings ? (
+      { !productData.product_listings ? (
         <p className="animate-pulse">loading</p>
       ) : (
         <motion.div
@@ -78,7 +78,7 @@ export default function App() {
             </tr>
           </thead>
           <tbody>
-          {productData.productlistings.map((product) =>
+          {productData.product_listings.map((product) =>
             <TableRow props={product}/>
           )}
           </tbody>
